@@ -75,7 +75,7 @@
 					if (typeof M.form.dependencyManagers === 'undefined') {
 						loadJs(rootUrl + '../../lib/javascript.php/0/lib/form/form.js');
 					}
-					$('.collapsed').removeClass('collapsed');
+					$('form .collapsed').removeClass('collapsed');
 				});
                 $elem.on('submit', 'form', buildSearchMoodleCourses($elem));
             });
