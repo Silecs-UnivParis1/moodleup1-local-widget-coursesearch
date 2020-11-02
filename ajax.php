@@ -70,7 +70,8 @@ if ($data) {
         $data->sesskey = sesskey();
         $data->_qf__course_batch_search_form = 1;
     }
-    $courses = get_courses_batch_search($data, "c.fullname ASC", 0, 9999, $totalcount);
+    $limit = ($data->limitresults ?  $data->limitresults : 9999);
+    $courses = get_courses_batch_search($data, "c.fullname ASC", 0, $limit, $totalcount);
 }
 
 if (empty($courses)) {
