@@ -1,38 +1,40 @@
 /*
  * @license http://www.gnu.org/licenses/gpl-2.0.html  GNU GPL v2
  */
-(function() {
+(function($) {
 
-    var rootUrl = findScriptUrl('coursesearch.js');
+    let jsUrl = findScriptUrl('coursesearch.js');
+    let ind = jsUrl.lastIndexOf('/lib/javascript.php');
+    let rootUrl = jsUrl.substr(0, ind);
 
     if (window.jQuery === undefined) {
-        loadJs(rootUrl + "../jquery/jquery.js", onLoadFinished);
-        loadJs(rootUrl + "../jquery/jquery-ui.js", false);
-        loadJs(rootUrl + "../jquery/jquery.dataTables.min.js", false);
+        loadJs(rootUrl + "/local/jquery/jquery.js", onLoadFinished);
+        loadJs(rootUrl + "/local/jquery/jquery-ui.js", false);
+        loadJs(rootUrl + "/local/jquery/jquery.dataTables.min.js", false);
     } else {
         onLoadFinished();
         if (window.jQuery.fn.accordion === undefined) {
             if (window.jQuery.fn.dataTables === undefined) {
-                loadJs(rootUrl + "../jquery/jquery-ui.js", false);
-                loadJs(rootUrl + "../jquery/jquery.dataTables.min.js", false);
+                loadJs(rootUrl + "/local/jquery/jquery-ui.js", false);
+                loadJs(rootUrl + "/local/jquery/jquery.dataTables.min.js", false);
             } else {
-                loadJs(rootUrl + "../jquery/jquery-ui.js", false);
+                loadJs(rootUrl + "/local/jquery/jquery-ui.js", false);
             }
         } else if (window.jQuery.fn.dataTables === undefined) {
-            loadJs(rootUrl + "../jquery/jquery.dataTables.min.js", false);
+            loadJs(rootUrl + "/local/jquery/jquery.dataTables.min.js", false);
         }
     }
 
     {
-        var linkTag = document.createElement('link');
+        let linkTag = document.createElement('link');
         linkTag.setAttribute("type","text/css");
         linkTag.setAttribute("rel","stylesheet");
-        linkTag.setAttribute("href", rootUrl + '../jquery/css/jquery.dataTables.css');
+        linkTag.setAttribute("href", rootUrl + '/local/jquery/css/jquery.dataTables.css');
         (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(linkTag);
     }
 
     function findScriptUrl(name) {
-        var scripts = document.getElementsByTagName('script');
+        let scripts = document.getElementsByTagName('script');
         for (var i=0; i<scripts.length; i++) {
             if (scripts[i].src.indexOf('/'+name) !== -1) {
                 return scripts[i].src.replace('/'+name, '/');
@@ -42,7 +44,7 @@
     }
 
     function loadJs(url, last) {
-        var script_tag = document.createElement('script');
+        let script_tag = document.createElement('script');
         script_tag.setAttribute("type","text/javascript");
         script_tag.setAttribute("src", url);
         (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script_tag);
@@ -71,9 +73,9 @@
         $.fn.coursesearch = function (params) {
             $(this.selector).each(function() {
                 var $elem = $(this);
-                $elem.load(rootUrl + 'ajax.php', params, function() {
+                $elem.load(rootUrl + '/local//widget_coursesearch/ajax.php', params, function() {
 					if (typeof M.form.dependencyManagers === 'undefined') {
-						loadJs(rootUrl + '../../lib/javascript.php/0/lib/form/form.js');
+						loadJs(rootUrl + '/lib/javascript.php/0/lib/form/form.js');
 					}
 					$('form .collapsed').removeClass('collapsed');
 				});
@@ -83,9 +85,9 @@
         };
         function buildSearchMoodleCourses($elem) {
             return function (event) {
-                var data = $(this).closest('form').serialize();
+                let data = $(this).closest('form').serialize();
                 $.ajax({
-                    'url': rootUrl + 'ajax.php',
+                    'url': rootUrl + '/local/widget_coursesearch/ajax.php',
                     'type': 'GET',
                     'data': data
                 }).done(function(html) {
@@ -118,4 +120,4 @@
         }
     }
 
-})();
+})(jQuery);
