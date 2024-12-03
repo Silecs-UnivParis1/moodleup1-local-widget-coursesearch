@@ -71,7 +71,7 @@ if ($data) {
         $data->_qf__course_batch_search_form = 1;
     }
     $limit = ($data->limitresults ?  $data->limitresults : 9999);
-    $courses = get_courses_batch_search($data, "c.fullname ASC", 0, $limit, $totalcount);
+    $courses = get_courses_batch_search($data, $totalcount, "c.fullname ASC", 0, $limit);
 }
 
 if (empty($courses)) {
